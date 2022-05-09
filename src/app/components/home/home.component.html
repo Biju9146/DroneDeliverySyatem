@@ -1,0 +1,91 @@
+<div class="hm-container">
+<div class="container">
+  <div *ngIf="gridFlag" class="row">
+  <div class="col d-flex justify-content-center">
+    <mat-card class="example-card">
+      <mat-card-header>
+      </mat-card-header>
+      <!-- <img mat-card-image src="../../../assets/Images/place-order.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-actions>
+        <button mat-stroked-button color="accent" (click)="showOrderForm()" mat-button>Book Parcel</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+  <div class="col d-flex justify-content-center">
+    <mat-card class="example-card">
+      <mat-card-header>
+      </mat-card-header>
+      <!-- <img mat-card-image src="../../../assets/Images/check-order-status.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-actions>
+        <button mat-stroked-button color="accent" (click)="checkParcel()" mat-button>Get Parcel</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  </div>
+
+  <div *ngIf="formFlag" class="hm-form-wrapper">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title >Place Parcel Form</mat-card-title>
+      </mat-card-header>
+
+      <form class="example-form">
+
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Sender Name">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Sender Email">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Sender Contact">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Sender Address">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Recepient Name">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Recepient Email">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Recepient Contact">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Recepient Address">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Recepient Latitude and Longitute">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Type of Parcel">
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Weight Of Parcel">
+          </mat-form-field>
+
+        </mat-card-content>
+
+        <button mat-stroked-button color="accent" (click)="placeParcel()" class="btn-block">Place Order</button>
+
+      </form>
+    </mat-card>
+  </div>
+
+
+</div>
+
+</div>

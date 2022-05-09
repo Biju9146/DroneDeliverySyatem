@@ -1,0 +1,26 @@
+#map {
+  height: 100vh;
+  padding: 0;
+}
+
+.delivery-container {
+    position: fixed;
+    height: 100%;
+    top: 65px;
+    width: 100%;
+}
+
+.restroMenu {
+  position: absolute;
+  bottom: 87px;
+  right: 46em;
+  z-index: 1000;
+}
+
+@keyframes fade {
+  from { opacity: 0.5; }
+}
+
+.blinking {
+  animation: fade 1s infinite alternate;
+}

@@ -1,0 +1,11 @@
+<h3>Number of drone available {{droneCount}}</h3>
+<mat-nav-list *ngFor="let element of orderListArray">
+  <a mat-list-item>
+    <span mat-line>{{element.orderName}}</span>
+    <span mat-line>{{element.orderWeight}} <p>{{element.receiverName}}</p></span>
+    <span>{{element.receiverAddress}}</span>
+  </a>
+  <button mat-stroked-button color="accent" (click)="openLink($event,element)">Send Package</button>
+  <hr/>
+</mat-nav-list>
+
