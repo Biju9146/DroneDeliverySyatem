@@ -1,0 +1,224 @@
+<div class="container order-form-wrapper">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Place Parcel Form</mat-card-title>
+    </mat-card-header>
+
+    <form
+      [formGroup]="placeOrderForm"
+      (ngSubmit)="placeParcel(placeOrderForm.value)"
+      class="order-form"
+    >
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="username"
+            placeholder="Sender Name"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('username').hasError('required') &&
+              (placeOrderForm.get('username').dirty ||
+                placeOrderForm.get('username').touched)
+            "
+            >Please sender enter name!</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="userEmail"
+            placeholder="Sender Email"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('userEmail').hasError('required') ||
+              (placeOrderForm.get('userEmail').hasError('emailPattern') &&
+                (placeOrderForm.get('userEmail').dirty ||
+                  placeOrderForm.get('userEmail').touched))
+            "
+          >
+            Please enter a valid sender email address!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="userMobile"
+            placeholder="Sender Contact"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('userMobile').hasError('required') ||
+              (placeOrderForm.get('userMobile').hasError('pattern') &&
+                (placeOrderForm.get('userMobile').dirty ||
+                  placeOrderForm.get('userMobile').touched))
+            "
+          >
+            Please enter a valid sender contact number!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="userAddress"
+            placeholder="Sender Complete Address"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('userAddress').hasError('required') &&
+              (placeOrderForm.get('userAddress').dirty ||
+                placeOrderForm.get('userAddress').touched)
+            "
+          >
+            Please enter a sender complete address!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="recepientName"
+            placeholder="Recepient Full Name"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('recepientName').hasError('required') &&
+              (placeOrderForm.get('recepientName').dirty ||
+                placeOrderForm.get('recepientName').touched)
+            "
+          >
+            Please enter a recepient full name!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="recepientEmail"
+            placeholder="Recepient Email"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('recepientEmail').hasError('required') ||
+              (placeOrderForm.get('recepientEmail').hasError('emailPattern') &&
+                (placeOrderForm.get('recepientEmail').dirty ||
+                  placeOrderForm.get('recepientEmail').touched))
+            "
+          >
+            Please enter a vaild recepient email address!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="recepientContact"
+            placeholder="Recepient Contact"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('recepientContact').hasError('required') ||
+              (placeOrderForm.get('recepientContact').hasError('pattern') &&
+                (placeOrderForm.get('recepientContact').dirty ||
+                  placeOrderForm.get('recepientContact').touched))
+            "
+          >
+            Please enter a valid recepient contact number!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="recepientAddress"
+            placeholder="Recepient Address"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('recepientAddress').hasError('required') &&
+              (placeOrderForm.get('recepientAddress').dirty ||
+                placeOrderForm.get('recepientAddress').touched)
+            "
+          >
+            Please enter a complete recepient address!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="recepientLatLng"
+            placeholder="Recepient Latitude and Longitute"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('recepientLatLng').hasError('required') ||
+              (placeOrderForm.get('recepientLatLng').hasError('latLngPattern') &&
+              (placeOrderForm.get('recepientLatLng').dirty ||
+               placeOrderForm.get('recepientLatLng').touched))
+            "
+          >
+            Please enter a valid lat lag of recepient address!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="typeofParcel"
+            placeholder="Type of Parcel"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('typeofParcel').hasError('required') &&
+              (placeOrderForm.get('typeofParcel').dirty ||
+                placeOrderForm.get('typeofParcel').touched)
+            "
+          >
+            Please enter a type of parcel!</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            formControlName="parcelWeight"
+            placeholder="Weight Of Parcel not more then 3kg"
+          />
+          <mat-error
+            *ngIf="
+              placeOrderForm.get('parcelWeight').hasError('required') ||
+              (placeOrderForm.get('parcelWeight').hasError('weightPattern') &&
+                (placeOrderForm.get('parcelWeight').dirty ||
+                  placeOrderForm.get('parcelWeight').touched))
+            "
+          >
+            Please enter a valid weight of parcel in numbers only!</mat-error
+          >
+        </mat-form-field>
+      </mat-card-content>
+
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="!placeOrderForm.valid"
+        class="btn-block-1"
+      >
+        Place Order
+      </button>
+
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="cancel()"
+        class="btn-block"
+      >
+        Cancel
+      </button>
+    </form>
+  </mat-card>
+</div>

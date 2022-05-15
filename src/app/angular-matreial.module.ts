@@ -34,6 +34,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import { ErrorcontrolMessageComponent } from './errorcontrol-message/errorcontrol-message.component';
 
 
 const materialModules = [
@@ -69,10 +70,13 @@ const materialModules = [
   MatRadioModule,
   MatDatepickerModule,
   MatTooltipModule,
-  MatBottomSheetModule
+  MatBottomSheetModule,
 ];
 
 @NgModule({
+  declarations: [
+  ErrorcontrolMessageComponent
+  ],
   providers: [
     { provide: MatBottomSheetRef, useValue: {} },
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} }
@@ -82,6 +86,7 @@ const materialModules = [
     ...materialModules
   ],
   exports: [
+    ErrorcontrolMessageComponent,
     ...materialModules
   ],
 })

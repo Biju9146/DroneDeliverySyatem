@@ -2,12 +2,11 @@
 .example-card {
   max-width: 400px;
   text-align: center;
+  padding: 251px 146px 27px;
+  background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
 
 .hm-container{
   margin-top: 100px;
@@ -20,5 +19,8 @@
   }
   .mat-card-header .mat-card-title{
   text-align: center;
+  }
+  .btn-block-1{
+    margin-right: 10px;
   }
 }

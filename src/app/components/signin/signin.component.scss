@@ -1,0 +1,15 @@
+.main-wrapper{
+  form{
+    p{
+      text-align: center;
+      padding: 30px;
+    & a{
+      text-decoration: none;
+      color: #ff4081;
+    }
+    }
+    button{
+      margin-top: 20px;
+    }
+  }
+}

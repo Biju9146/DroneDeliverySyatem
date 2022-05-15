@@ -10,10 +10,16 @@
     width: 100%;
 }
 
-.restroMenu {
+.deliveryList {
   position: absolute;
   bottom: 87px;
   right: 46em;
+  z-index: 1000;
+}
+.drone-available .mat-chip-list{
+  top: 78px;
+  position: absolute;
+  left: 10px;
   z-index: 1000;
 }
 

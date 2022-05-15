@@ -63,7 +63,10 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
   latlng = [53.34921, -6.260458];
   mymap;
   layer;
-  animatedMarker;
+  animatedMarker = [];
+  animatedMarkerReturningHome = [];
+  droneCount : number = 1
+  estimatedTimeFlag: boolean = false;
   constructor(
     private _bottomSheet: MatBottomSheet,
     private _commonService: CommonService
@@ -73,27 +76,27 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes event ', changes);
-    // this.newValue = changes.currentValue;
-    // var container = L.DomUtil.get('map');
-    //   console.log('container is ', container);
-    //   if (container != null) {
-    //     container._leaflet_id = null;
-    //   }
-    // this.addPropsOnMap();
   }
 
   ngOnInit(): void {
-    this._commonService.checkUserDataStatus.subscribe((data) => {
+    this._commonService.checkUserParcelDataStatus.subscribe((data) => {
       console.log('observable data ', data);
       if (data) {
         this.addNewPropsOnMap(data);
       } else {
         this.initMap();
-        // this.addPropsOnMap()
       }
     });
 
+    navigator.geolocation.getCurrentPosition((position) => {
+      let coords = position.coords;
+      let latlong = [coords.latitude, coords.longitude];
+      console.log(
+        `lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
+      );
+    });
     this.watchPosition();
+
   }
 
   initMap() {
@@ -128,46 +131,10 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
       .bindPopup('<b>Hello world!</b><br> I am Drone Service provider.', {
         closeOnClick: true,
       });
-    marker.openPopup();
-
-    // this.addPropsOnMap();
+      marker.openPopup();
   }
 
-  addPropsOnMap() {
-    // setTimeout(function () {
-    //   this.mymap.invalidateSize();
-    // }, 5000);
-    console.log('addProps else part');
-    this.mymap.on('click', (e) => {
-      alert('You clicked the map at ' + e.latlng);
-      // if (marker) {
-      //   mymap.removeLayer(marker);
-      // }
-      // marker = L.marker([e.latlng.lat, e.latlng.lng],this.markerIcon).addTo(mymap)
-      // marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-    });
-    let polyline = L.polyline(this.latlngs, { color: 'red' })
-      .bindPopup('Route 1')
-      .openPopup()
-      .addTo(this.mymap);
 
-    this.mymap.fitBounds(polyline.getBounds());
-
-    // moving marker
-    var line = L.polyline(this.latlngs),
-      animatedMarker = L.animatedMarker(line.getLatLngs(), {
-        interval: 4000, // milliseconds
-      }).bindPopup('<b>Hello world!</b><br>I am a popup.');
-    this.mymap.addLayer(animatedMarker);
-
-    navigator.geolocation.getCurrentPosition((position) => {
-      let coords = position.coords;
-      let latlong = [coords.latitude, coords.longitude];
-      console.log(
-        `lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
-      );
-    });
-  }
 
   watchPosition() {
     let destinationLat = 0;
@@ -192,46 +159,62 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
+
   openBottomSheet() {
     this._bottomSheet.open(OrderListComponent);
   }
 
   addNewPropsOnMap(newProps) {
     console.log('new Props ', newProps);
-
-    let polyline = L.polyline(newProps.receiverLatLang, { color: 'red' })
+    this.droneCount -= 1;
+    let droneIndex = 0;
+    this.animatedMarker.push(newProps.id);
+    let polyline = L.polyline([this.latlng, newProps.recepientLatLng], { color: 'red' })
       .bindPopup('Route 2')
       .openPopup()
       .addTo(this.mymap);
 
-    var line = L.polyline(newProps.receiverLatLang);
-    this.animatedMarker = L.animatedMarker(
+    var line = L.polyline([this.latlng, newProps.recepientLatLng]);
+    this.animatedMarker.map((element, index)=>{
+    console.log("drone element",element)
+    console.log("this.animatedMarker[index] element",this.animatedMarker[index])
+    this.estimatedTimeFlag = !this.estimatedTimeFlag;
+
+      this.animatedMarker[index] = L.animatedMarker(
       line.getLatLngs(),
       this.deliveryMarkerIcon,
       {
         distance: 90000,
         interval: 2000, // milliseconds
       }
-    )
-      .bindPopup('I am a popup 2.', {
+    ).bindPopup(`I am a popup ${element}.`, {
         closeOnClick: false,
-      })
-      .openPopup();
+      }).openPopup();
 
-    setTimeout(() => {this.animatedMarker.bindPopup('I reached to destination!').openPopup();}, 3000);
+    setTimeout(() => {this.animatedMarker[index].bindPopup(`Delivery id ${element} reached to destination!`).openPopup();}, 2000);
     setTimeout(() => {
-      if (this.animatedMarker) {
-        this.mymap.removeLayer(this.animatedMarker);
+      if (index == droneIndex) {
+        this.mymap.removeLayer(this.animatedMarker[droneIndex]);
+        this._commonService.shipedParcelStatus(element);
+        this.animatedMarker.pop()
+        this.returDroneToHome([this.latlng, newProps.recepientLatLng], element);
       }
-      this.returDroneToHome(newProps.receiverLatLang);
-    }, 5000);
-    this.mymap.addLayer(this.animatedMarker);
+    }, 3000);
+    this.mymap.addLayer(this.animatedMarker[index]);
+    })
   }
 
-  returDroneToHome(returDroneToHome) {
-    // let destination = returDroneToHome[1]
+  returDroneToHome(returDroneToHome, droneId) {
+    let retuningDroneIndex = 0;
+    this.animatedMarkerReturningHome.push(droneId)
+    let polyline = L.polyline([returDroneToHome[1], returDroneToHome[0]], { color: 'green' })
+      .bindPopup('Retuning Home!')
+      .openPopup()
+      .addTo(this.mymap);
+
     var line = L.polyline([returDroneToHome[1], returDroneToHome[0]]);
-    let animatedMarker = L.animatedMarker(
+    this.animatedMarkerReturningHome.map((retuningElement, index)=>{
+      retuningElement = L.animatedMarker(
       line.getLatLngs(),
       this.deliveryMarkerIcon,
       {
@@ -239,11 +222,15 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
         interval: 2000, // milliseconds
       }
     );
-    this.mymap.addLayer(animatedMarker);
+    this.mymap.addLayer(retuningElement);
     setTimeout(() => {
-      if (animatedMarker) {
-        this.mymap.removeLayer(animatedMarker);
+      if (index == retuningDroneIndex) {
+        this.mymap.removeLayer(retuningElement);
+        this.estimatedTimeFlag = !this.estimatedTimeFlag;
+        this.animatedMarkerReturningHome.pop()
       }
+      this.droneCount += 1;
     }, 3000);
+    })
   }
 }

@@ -1,11 +1,14 @@
-<h3>Number of drone available {{droneCount}}</h3>
+<div class="bottom-sheet-wrapper">
+<h3><mat-chip-list><mat-chip color="primary" selected>Pending parcels to deliver - {{deliveryCount.length}}</mat-chip></mat-chip-list></h3>
 <mat-nav-list *ngFor="let element of orderListArray">
   <a mat-list-item>
-    <span mat-line>{{element.orderName}}</span>
-    <span mat-line>{{element.orderWeight}} <p>{{element.receiverName}}</p></span>
-    <span>{{element.receiverAddress}}</span>
+    <span mat-line><h5>Package Name: {{element.typeofParcel}}</h5></span>
+    <span mat-line><h5>Package weight: {{element.parcelWeight}}</h5><p>Receiver Name: {{element.recepientName}}</p></span>
+    <span><h5>{{element.recepientAddress}}</h5></span>
   </a>
-  <button mat-stroked-button color="accent" (click)="openLink($event,element)">Send Package</button>
+  <button *ngIf="element.deliveryFlag == '1'; else other_content" [disabled]="element.deliveryFlag" mat-stroked-button color="accent">Parcel Shiped!</button>
+  <ng-template #other_content><button mat-stroked-button color="accent" (click)="sendDeliveryPackage($event,element)">Send Package</button>
+  </ng-template>
   <hr/>
 </mat-nav-list>
-
+</div>

@@ -4,6 +4,7 @@ import { DeliveryPageComponent } from './components/delivery-page/delivery-page.
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SigninComponent } from './components/signin/signin.component';
+import { OrderFormComponent } from './components/order-form/order-form.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'delivery-page', component: DeliveryPageComponent },
-  { path: 'home', component: HomeComponent }
+  { path: 'home', component: HomeComponent },
+  { path: 'order-form', component: OrderFormComponent }
 ];
 
 @NgModule({

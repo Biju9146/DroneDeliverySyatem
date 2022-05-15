@@ -4,11 +4,16 @@
        ></div> -->
   <div id="map"></div>
 
-  <div class="restroMenu">
+  <div class="deliveryList">
     <div class="example-button-container">
       <button (click)="openBottomSheet()" mat-fab color="primary" aria-label="Example icon button with a delete icon">
         <mat-icon>menu_book</mat-icon>
       </button>
     </div>
+  </div>
+  <div class ="drone-available">
+    <mat-chip-list><mat-chip color="primary" selected>Drone available - {{droneCount}}</mat-chip></mat-chip-list>
+    <mat-chip-list><mat-chip *ngIf="estimatedTimeFlag" color="primary" selected>Estimation time to deliver - 2 minitues</mat-chip></mat-chip-list>
+
   </div>
   </div>

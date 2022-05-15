@@ -4,32 +4,57 @@
       <mat-card-title>Register</mat-card-title>
     </mat-card-header>
 
-    <form class="example-form">
+    <form [formGroup]="registrationForm"  (ngSubmit)="registration(registrationForm.value)">
 
       <mat-card-content>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Username">
-        </mat-form-field>
+          <input matInput placeholder="User Name" formControlName="regName"
+          >
+          <mat-error
+          *ngIf="
+            registrationForm.get('regName').hasError('required') &&
+              (registrationForm.get('regName').dirty ||
+                registrationForm.get('regName').touched)
+          "
+        >
+          Please enter user name!</mat-error
+        >
+      </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Email">
-        </mat-form-field>
+          <input matInput placeholder="Email address" formControlName="regEmail">
+          <mat-error
+          *ngIf="
+            registrationForm.get('regEmail').hasError('required') ||
+            (registrationForm.get('regEmail').hasError('pattern') &&
+              (registrationForm.get('regEmail').dirty ||
+                registrationForm.get('regEmail').touched))
+          "
+        >
+          Please enter a valid email address!</mat-error
+        >
+      </mat-form-field>
+
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Password">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Choose designation</mat-label>
-          <mat-select>
-            <mat-option [value]="user" *ngFor="let user of User">{{user}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <input matInput placeholder="Password" type="password" formControlName="regPassword">
+          <mat-error
+          *ngIf="
+            registrationForm.get('regPassword').hasError('required') ||
+            (registrationForm.get('regPassword').hasError('passPattern') &&
+              (registrationForm.get('regPassword').dirty ||
+                registrationForm.get('regPassword').touched))
+          "
+        >
+          Please enter a valid password pattern!<br>
+          like length of password should be 8 with combination of
+          atleast one capital letter, one special symbol,and number</mat-error
+        >
+      </mat-form-field>
 
       </mat-card-content>
 
-      <button mat-stroked-button color="accent" class="btn-block">Register</button>
+      <button mat-stroked-button color="accent" [disabled]="!registrationForm.valid" class="btn-block">Register</button>
       <p>Already user?  <a href="javascritp:;" (click)="existingUser()">Login here!</a></p>
 
     </form>

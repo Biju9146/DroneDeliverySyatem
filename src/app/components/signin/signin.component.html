@@ -5,17 +5,39 @@
       <mat-card-title>Sign In</mat-card-title>
     </mat-card-header>
 
-    <form class="example-form">
+    <form [formGroup]="loginForm"  (ngSubmit)="login(loginForm.value)">
       <mat-card-content>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Username">
+          <input matInput formControlName="loginEmail" placeholder="Login Email Address">
+          <mat-error
+          *ngIf="
+            loginForm.get('loginEmail').hasError('required') ||
+            (loginForm.get('loginEmail').hasError('pattern') &&
+              (loginForm.get('loginEmail').dirty ||
+                loginForm.get('loginEmail').touched))
+          "
+        >
+        Please enter a valid email address!</mat-error
+        >
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Password">
+          <input matInput formControlName="loginPassword" type="password" placeholder="Login Password">
+          <mat-error
+          *ngIf="
+            loginForm.get('loginPassword').hasError('required') ||
+            (loginForm.get('loginPassword').hasError('passPattern') &&
+              (loginForm.get('loginPassword').dirty ||
+                loginForm.get('loginPassword').touched))
+          "
+        >
+        Please enter a valid password pattern!<br>
+        like length of password should be 8 with combination of
+        atleast one capital letter, one special symbol,and one number</mat-error
+        >
         </mat-form-field>
       </mat-card-content>
-      <button (click)="home()" mat-stroked-button color="accent" class="btn-block">Sign-in</button>
+      <button mat-stroked-button color="accent" [disabled]="!loginForm.valid" class="btn-block">Sign-in</button>
       <p>New user?  <a href="javascritp:;" (click)="newUser()">create accout</a></p>
     </form>
   </mat-card>

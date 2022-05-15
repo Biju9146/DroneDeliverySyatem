@@ -26,6 +26,7 @@
     "leaflet-routing-machine": "^3.2.12",
     "leaflet.animatedmarker": "^1.0.0",
     "leaflet.smooth_marker_bouncing": "^2.0.1",
+    "ngx-spinner": "^9.0.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
