@@ -10,8 +10,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { AngularMaterialModule } from './angular-matreial.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { RestaurantsComponent } from './components/restaurants/restaurants.component';
-import { RestaurantsMenusComponent } from './components/restaurants-menus/restaurants-menus.component';
 import 'leaflet.animatedmarker/src/AnimatedMarker';
 import 'leaflet.smooth_marker_bouncing';
 import { DeliveryPageComponent } from './components/delivery-page/delivery-page.component';
@@ -31,8 +29,6 @@ import { HttpClientModule } from '@angular/common/http';
     SigninComponent,
     RegisterComponent,
     HomeComponent,
-    RestaurantsComponent,
-    RestaurantsMenusComponent,
     DeliveryPageComponent,
     OrderListComponent,
     HeaderComponent,

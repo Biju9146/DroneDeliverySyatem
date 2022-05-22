@@ -32,10 +32,8 @@ export class RegisterComponent implements OnInit {
       userEmail : regData.regEmail,
       userPassword : regData.regPassword,
     }
-    console.log("regData ++++ ",requestData)
 
     this._service.registrationUser(requestData).subscribe((responseData)=>{
-      console.log("responseData ", responseData)
       if(responseData.status == 200){
         this._router.navigate(['']);
       }
@@ -44,7 +42,6 @@ export class RegisterComponent implements OnInit {
   }
 
   emailPattern = (control: FormControl): {[s: string]: boolean} => {
-    console.log('+++++++ ',control.value)
     if(!control.value) {
       return { required: true };
     } else if (control.value.match((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))){
@@ -55,7 +52,6 @@ export class RegisterComponent implements OnInit {
   }
 
   passwordPattern = (control: FormControl): {[s: string]: boolean} => {
-    console.log('+++++++ ',control.value)
     if(!control.value) {
       return { required: true };
     } else if (control.value.match((/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))){

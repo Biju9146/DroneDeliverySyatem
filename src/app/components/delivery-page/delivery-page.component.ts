@@ -1,15 +1,12 @@
 import {
-  AfterViewInit,
   Component,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { CommonService } from 'src/app/observables/commonService';
 import { OrderListComponent } from '../order-list/order-list.component';
+import { OrderListService } from '../order-list/orderList.service';
 declare const L: any;
 
 @Component({
@@ -17,27 +14,8 @@ declare const L: any;
   templateUrl: './delivery-page.component.html',
   styleUrls: ['./delivery-page.component.scss'],
 })
-export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
-  // private mymap = new L.map('map');
-  locationArray = [
-    { lat: 53.35362523805683, lng: -6.291389465332032, name: 'marker1' },
-    { lat: 53.337433437129675, lng: -6.244010925292969, name: 'marker2' },
-    { lat: 53.34071328580364, lng: -6.23027801513672, name: 'marker3' },
-    { lat: 53.32861759386586, lng: -6.233367919921875, name: 'marker4' },
-    { lat: 53.3419431640244, lng: -6.347351074218751, name: 'marker5' },
-  ];
+export class DeliveryPageComponent implements OnInit {
 
-  movingLatLngArray = [
-    [53.352421, -6.26298],
-    [53.343506, -6.284866],
-    [53.350244, -6.286368],
-  ];
-
-  latlngs = [
-    [53.35362523805683, -6.291389465332032],
-    [53.337433437129675, -6.244010925292969],
-    [53.34071328580364, -6.23027801513672],
-  ];
   // placeholders for the L.marker and L.circle representing user's current position and accuracy
 
   markerIcon = {
@@ -69,18 +47,12 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
   estimatedTimeFlag: boolean = false;
   constructor(
     private _bottomSheet: MatBottomSheet,
-    private _commonService: CommonService
+    private _commonService: CommonService,
+    private _orderListService : OrderListService
   ) {}
-
-  ngAfterViewInit(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes event ', changes);
-  }
 
   ngOnInit(): void {
     this._commonService.checkUserParcelDataStatus.subscribe((data) => {
-      console.log('observable data ', data);
       if (data) {
         this.addNewPropsOnMap(data);
       } else {
@@ -92,7 +64,7 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
       let coords = position.coords;
       let latlong = [coords.latitude, coords.longitude];
       console.log(
-        `lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
+        `current position lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
       );
     });
     this.watchPosition();
@@ -128,7 +100,7 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
       .on('click', function () {
         this.bounce(3);
       })
-      .bindPopup('<b>Hello world!</b><br> I am Drone Service provider.', {
+      .bindPopup('<b>An Post!</b><br>Drone Delivery Service Center.', {
         closeOnClick: true,
       });
       marker.openPopup();
@@ -143,10 +115,12 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
     let watchId = navigator.geolocation.watchPosition(
       (position) => {
         console.log(
-          `lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
+          `checking position - lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`
         );
         if (position.coords.latitude === destinationLat) {
           navigator.geolocation.clearWatch(watchId);
+        } else {
+          console.log("Drone is not moving, No new location found!");
         }
       },
       (error) => {
@@ -165,7 +139,6 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   addNewPropsOnMap(newProps) {
-    console.log('new Props ', newProps);
     this.droneCount -= 1;
     let droneIndex = 0;
     this.animatedMarker.push(newProps.id);
@@ -176,8 +149,6 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
 
     var line = L.polyline([this.latlng, newProps.recepientLatLng]);
     this.animatedMarker.map((element, index)=>{
-    console.log("drone element",element)
-    console.log("this.animatedMarker[index] element",this.animatedMarker[index])
     this.estimatedTimeFlag = !this.estimatedTimeFlag;
 
       this.animatedMarker[index] = L.animatedMarker(
@@ -227,10 +198,28 @@ export class DeliveryPageComponent implements OnInit, AfterViewInit, OnChanges {
       if (index == retuningDroneIndex) {
         this.mymap.removeLayer(retuningElement);
         this.estimatedTimeFlag = !this.estimatedTimeFlag;
+        this.updateDeliveryFlag(droneId);
         this.animatedMarkerReturningHome.pop()
       }
       this.droneCount += 1;
     }, 3000);
     })
+  }
+
+  updateDeliveryFlag(shipedData){
+    let userEmail = sessionStorage.getItem('user')
+
+      let requestData = {
+        deliveryFlag : '1',
+        id : shipedData,
+        loginEmail : userEmail
+      }
+      this._orderListService.updateDeliveryOrderStatus(requestData).subscribe((responseData)=>{
+        if(responseData.status == 200){
+          console.log("Delivery success!")
+        } else {
+          console.log("Went wrong for Status Updated !")
+        }
+      })
   }
 }

@@ -22,7 +22,6 @@ export class LoaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log(this.loaderService.loaderView, 'view');
     this.loaderService.loaderView.subscribe(loading => {
       if(loading){
         this.viewLoader = true;

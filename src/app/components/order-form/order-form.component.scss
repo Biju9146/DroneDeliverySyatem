@@ -1,9 +1,11 @@
 .order-form-wrapper{
   margin-top: 100px;
-
+  .mat-card .mat-card-title{
+    color:#ff4081
+  }
   .order-form{
     width: 100%;
-    .example-full-width{
+    .form-full-width{
       width: 45%;
       margin-right: 20px;
     }
